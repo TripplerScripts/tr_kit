@@ -5,7 +5,7 @@ dependencies {
 }
 
 author 'Trippler'
-version '0.0.2'
+version '0.0.3'
 
 shared_scripts {
     'utils/print.js',

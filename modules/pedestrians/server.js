@@ -1,3 +1,7 @@
+function callback() {
+    return exports.tr_lib.callback()
+}
+
 function createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic) {
     if (typeof model !== 'string') {
         print().debug(`wrong type on the first argument, expected string of hash received ${typeof model} or ${model} indeed`)
@@ -15,7 +19,7 @@ function createSinglePed(model, coords, scenario, isAccessPublic, isControlPubli
 
     const ped = CreatePed(null, model || 'ig_talcc', coords.x, coords.y, coords.z, coords.w, !!isAccessPublic, !!isAccessPublic && !isControlPublic);
     if (typeof scenario === 'object' && scenario != null) {
-        exports.tr_lib.callback().awaitClient('getPedScenario', -1, 1000, ped, scenario).then(([result, message]) => {
+        callback().awaitClient('getPedScenario', -1, 1000, ped, scenario).then(([result, message]) => {
             if (message != null) {
                 print().inf(`task request was ${message}, status ${result}`);
             }
@@ -84,6 +88,22 @@ function clearCreatedPeds(entities) {
         DeleteEntity(entities[i]);
     }
 }
+
+callback().register('createSinglePed', function(model, coords, scenario, isAccessPublic, isControlPublic) {
+    return createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic)
+})
+
+callback().register('createMultiplePeds', function(peds, defaultSettings) {
+    return createMultiplePeds(peds, defaultSettings)
+})
+
+callback().register('clearCreatedPed', function(entity) {
+    return clearCreatedPed(entity)
+})
+
+callback().register('clearCreatedPeds', function(entities) {
+    return clearCreatedPeds(entities)
+})
 
 exports('createSinglePed', createSinglePed)
 exports('createMultiplePeds', createMultiplePeds)

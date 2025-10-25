@@ -2,12 +2,11 @@ function callback() {
     return exports.tr_lib.callback()
 }
 
-callback().register('getPedScenario', (ped, scenario) => {
+onNet('getPedScenario', (ped, scenario) => {
     try {
         TaskStartScenarioInPlace(ped, scenario.name, scenario.timeToLeave, scenario.playIntroClip);
-        return [true, 'success'];
     } catch (error) {
-        return [false, error.message];
+        console.error(`Failed to set scenario: ${error}`);
     }
 });
 

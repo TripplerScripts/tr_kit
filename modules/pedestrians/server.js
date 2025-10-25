@@ -19,13 +19,7 @@ function createSinglePed(model, coords, scenario, isAccessPublic, isControlPubli
 
     const ped = CreatePed(null, model || 'ig_talcc', coords.x, coords.y, coords.z, coords.w, !!isAccessPublic, !!isAccessPublic && !isControlPublic);
     if (typeof scenario === 'object' && scenario != null) {
-        callback().awaitClient('getPedScenario', -1, 1000, ped, scenario).then(([result, message]) => {
-            if (message != null) {
-                print().inf(`task request was ${message}, status ${result}`);
-            }
-        }).catch(error => {
-            print().err('Failed to set scenario:', error);
-        });
+        emitNet('getPedScenario', -1, ped, scenario);
     }
     on('onResourceStop', (resourceName) => {
         if (GetCurrentResourceName() == resourceName) {

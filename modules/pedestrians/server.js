@@ -103,3 +103,8 @@ exports('createSinglePed', createSinglePed)
 exports('createMultiplePeds', createMultiplePeds)
 exports('clearCreatedPed', clearCreatedPed)
 exports('clearCreatedPeds', clearCreatedPeds)
+
+on('playerJoining', (oldId) => {
+    const playerId = source; // This will be 1, 2, 3, etc.
+    console.log(`Player ${playerId} is joining`);
+  });

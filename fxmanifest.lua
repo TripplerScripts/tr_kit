@@ -5,10 +5,9 @@ dependencies {
 }
 
 author 'Trippler'
-version '0.0.4'
+version '0.0.5'
 
 shared_scripts {
-    'utils/print.js',
     'modules/blips/shared.js',
 }
 server_scripts {

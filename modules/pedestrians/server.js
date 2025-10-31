@@ -1,10 +1,8 @@
-function callback() {
-    return exports.tr_lib.callback()
-}
+const lib = exports.tr_lib.require('@tr_lib/init')
 
 function createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic) {
     if (typeof model !== 'string') {
-        print().debug(`wrong type on the first argument, expected string of hash received ${typeof model} or ${model} indeed`)
+        lib.print.debug(`wrong type on the first argument, expected string of hash received ${typeof model} or ${model} indeed`)
     }
     coords = JSON.parse(coords)
     if (
@@ -13,7 +11,7 @@ function createSinglePed(model, coords, scenario, isAccessPublic, isControlPubli
         coords.x == null || coords.y == null ||
         coords.z == null || coords.w == null
     ) {
-        print().err(`wrong type or missing a value on the second argument, (type: ${typeof coords}, values: x:${coords?.x}, y:${coords?.y}, z:${coords?.z}, w:${coords?.w})`)
+        lib.print.err(`wrong type or missing a value on the second argument, (type: ${typeof coords}, values: x:${coords?.x}, y:${coords?.y}, z:${coords?.z}, w:${coords?.w})`)
         return;
     }
 
@@ -31,7 +29,7 @@ function createSinglePed(model, coords, scenario, isAccessPublic, isControlPubli
 
 function createMultiplePeds(peds, defaultSettings) {
     if (!Array.isArray(peds) || peds.length === 0) {
-        print().err('expected an array of peds, received data will not be processed')
+        lib.print.err('expected an array of peds, received data will not be processed')
         return [];
     }
 
@@ -43,7 +41,7 @@ function createMultiplePeds(peds, defaultSettings) {
         }
         const coords = ped.coords;
         if (!coords || coords.x == null || coords.y == null || coords.z == null || coords.w == null) {
-            print().debug(`unproper vector received for ped index number ${i} with x:${coords.x}, y:${coords.y}, z:${coords.z}, w:${coords.w}`);
+            lib.print.debug(`unproper vector received for ped index number ${i} with x:${coords.x}, y:${coords.y}, z:${coords.z}, w:${coords.w}`);
             continue;
         }
 
@@ -68,14 +66,14 @@ function createMultiplePeds(peds, defaultSettings) {
 
 function clearCreatedPed(entity) {
     if (typeof entity !== 'number') {
-        print().debug(`received ${typeof entity} instead of a number, if you passed an array of number to delete multiple peds, please use clearCreatedPeds instead of clearCreatePeds`)
+        lib.print.debug(`received ${typeof entity} instead of a number, if you passed an array of number to delete multiple peds, please use clearCreatedPeds instead of clearCreatePeds`)
     }
     DeleteEntity(entity);
 }
 
 function clearCreatedPeds(entities) {
     if (!Array.isArray(entities)) {
-        print().debug(`received ${typeof entities} instead of array, use clearCreatedPed for single ped`)
+        lib.print.debug(`received ${typeof entities} instead of array, use clearCreatedPed for single ped`)
     }
 
     for (let i = 0; i < entities.length; i++) {
@@ -83,19 +81,19 @@ function clearCreatedPeds(entities) {
     }
 }
 
-callback().register('createSinglePed', function(model, coords, scenario, isAccessPublic, isControlPublic) {
+lib.callback.register('createSinglePed', function(model, coords, scenario, isAccessPublic, isControlPublic) {
     return createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic)
 })
 
-callback().register('createMultiplePeds', function(peds, defaultSettings) {
+lib.callback.register('createMultiplePeds', function(peds, defaultSettings) {
     return createMultiplePeds(peds, defaultSettings)
 })
 
-callback().register('clearCreatedPed', function(entity) {
+lib.callback.register('clearCreatedPed', function(entity) {
     return clearCreatedPed(entity)
 })
 
-callback().register('clearCreatedPeds', function(entities) {
+lib.callback.register('clearCreatedPeds', function(entities) {
     return clearCreatedPeds(entities)
 })
 
@@ -104,7 +102,7 @@ exports('createMultiplePeds', createMultiplePeds)
 exports('clearCreatedPed', clearCreatedPed)
 exports('clearCreatedPeds', clearCreatedPeds)
 
-on('playerJoining', (oldId) => {
+on('playerJoining', () => {
     const playerId = source; // This will be 1, 2, 3, etc.
     console.log(`Player ${playerId} is joining`);
-  });
+});

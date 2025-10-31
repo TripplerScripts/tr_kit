@@ -1,6 +1,4 @@
-function callback() {
-    return exports.tr_lib.callback()
-}
+const lib = exports.tr_lib.require('@tr_lib/init')
 
 onNet('getPedScenario', (ped, scenario) => {
     try {
@@ -11,19 +9,19 @@ onNet('getPedScenario', (ped, scenario) => {
 });
 
 function createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic) {
-    return callback().awaitServer('createSinglePed', null, model, coords, scenario, isAccessPublic, isControlPublic)
+    return lib.callback.await('createSinglePed', null, model, coords, scenario, isAccessPublic, isControlPublic)
 }
 
 function createMultiplePeds(peds, defaultSettings) {
-    return callback().awaitServer('createMultiplePeds', null, peds, defaultSettings)
+    return lib.callback.await('createMultiplePeds', null, peds, defaultSettings)
 }
 
 function clearCreatedPed(entity) {
-    return callback().awaitServer('clearCreatedPed', null, entity)
+    return lib.callback.await('clearCreatedPed', null, entity)
 }
 
 function clearCreatedPeds(entities) {
-    return callback().awaitServer('clearCreatedPeds', null, entities)
+    return lib.callback.await('clearCreatedPeds', null, entities)
 }
 
 exports('createSinglePed', createSinglePed)

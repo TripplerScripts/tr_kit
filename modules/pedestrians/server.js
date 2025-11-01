@@ -1,4 +1,4 @@
-const lib = exports.tr_lib.require('@tr_lib/init')
+const lib = exports.tr_lib.require('@tr_lib/get')
 
 function createSinglePed(model, coords, scenario, isAccessPublic, isControlPublic) {
     if (typeof model !== 'string') {
